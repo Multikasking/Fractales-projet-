@@ -1,0 +1,65 @@
+import turtle
+from turtle import *
+
+def regle(string):
+    nstring=""
+    if string=="X":
+        nstring="F-[[X]+X]+F[+FX]-X"
+    elif string=="F":
+        nstring="FF"
+    else:
+        nstring=string
+    return nstring
+#ce sont les régles, les conditions seront definie dans d'autres fonctions
+def processtring(astring):
+    nstring=""
+    for i in astring:
+        nstring=nstring+regle(i)
+    return nstring
+def createsystem(iteration,axiomes):
+    string0=axiomes
+    fstring=""
+    for _ in range (iteration):
+        fstring=processtring(string0)
+        string0=fstring
+    return fstring
+#ici on crée le processus de récursion, fstring est procéssés puis le procédé recommence pour chaque iterations créant une très longue string
+def commandes(bob,instruction,distance,angle):
+    possaved=[]
+    for commande in instruction:
+        if commande=="F":
+            bob.forward(distance)
+        elif commande=="B":
+            bob.backward(distance)
+        elif commande=="+":
+            bob.right(angle)
+        elif commande=="-":
+            bob.left(angle)
+        elif commande=="X":
+            bob.pd()
+        elif commande=="[":
+            possaved.append([bob.heading(),bob.xcor(),bob.ycor()])
+        elif commande=="]":
+            newinfo=possaved.pop()
+            bob.up()
+            bob.setheading(newinfo[0])
+            bob.setposition([newinfo[1],newinfo[2]])
+            bob.down()
+            
+
+def main():
+    
+    bob=turtle.Turtle()
+    wn=turtle.Screen()
+    run=createsystem(7,"X")#va créer la string qui va ensuite être utilisée
+    bob.up()
+    bob.back(400)
+    bob.down()
+    bob.speed(0)
+    print(run)
+    
+    commandes(bob,run,5,22.5)
+    wn.exitonclick()
+main()
+#source pour le code
+#https://understanding-recursion.readthedocs.io/en/latest/15%20L-System.html
