@@ -1,0 +1,34 @@
+import numpy as np
+import matplotlib.pyplot as plt
+def P(z):
+    return z**3-2*z+2
+def derivative(z):
+    return 3*z**2-2
+def newton_complexe(f,eps,h_range,w_range,itemax):
+    y, x = np.ogrid[-1: 1: h_range*1j, -1: 1: w_range*1j]
+    a_array=x+y*1j
+    iteration_avant_racine=np.zeros(a_array.shape)
+    for h in range (h_range):
+        for w in range (w_range):
+                z=a_array[h][w]
+                z=z-P(z)/derivative(z)
+                for i in range (itemax):
+                    z_0=z
+                    z=z-P(z)/derivative(z)#la dérivée faite manuellement
+                    if abs(z_0-z)<eps:
+                        if np.imag(z)<=eps and np.imag(z)>=-eps:
+                            iteration_avant_racine[h][w]=30
+                        elif np.imag(z)>eps:
+                            iteration_avant_racine[h][w]=60
+                        elif np.imag(z)<eps:
+                            iteration_avant_racine[h][w]=90
+                        break
+                    elif i==itemax-1:
+                        iteration_avant_racine[h][w]==0
+                        break
+               
+    return iteration_avant_racine
+a=newton_complexe(P,10**-6,1200,1200,40)
+plt.figure(figsize=(20,20))
+plt.axis("off")
+plt.imshow(a, cmap='gnuplot')
