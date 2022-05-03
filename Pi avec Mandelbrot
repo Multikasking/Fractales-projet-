@@ -1,0 +1,22 @@
+import numpy as np
+#mandelbrot pi
+def mandelbrotpi (a,b):
+    z=0
+    k=0
+    c=a+b*1j
+    while abs((np.real(z)**2+np.imag(z)**2)**0.5)<2:
+        k+=1
+        z=z**2+c
+    return k
+
+p=1
+m=0
+estipi=10
+yay=np.zeros(estipi)
+
+for m in range (estipi):
+    t=mandelbrotpi (-0.75,p)
+    print(t)
+    p=p/10
+    yay[m]=t
+print(yay)
